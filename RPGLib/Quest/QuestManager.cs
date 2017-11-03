@@ -16,34 +16,35 @@ namespace RPGLib.Quest
 
         public QuestElement[] QuestElements { get; set; }
 
-        public string CurrentText => _currentElement.QuestDescription;
-        public FollowQuest[] CurrentAnswers => _currentElement.FollowQuests;
-
-        private QuestElement _currentElement { get; set; }
-        
+        public event Action<QuestElement> QuestStarted;
+        public event Action<QuestElement> QuestFinished;
 
         private QuestManager() { }
 
         public void StartQuest(string id)
         {
-            _currentElement = QuestElements.Find(e => e.ID == id); //obacht
-            _currentElement.CommandsAtStart.ForEach(CommandManager.Instance.EvalCommand);
+            var temp = Array.Find(QuestElements, q => q.ID == id);
+
+            if (temp.Status == QStatus.Inactive)
+            {
+                temp.Status = QStatus.Active;
+                QuestStarted(temp);
+
+                CommandManager.Instance.EvalCommands(temp.CommandsAtStart);
+            }
         }
 
-        public bool NextQuest(string id)
+        public void FinishQuest(string id)
         {
-            _currentElement.FollowQuests.Find(array => array.LinkedID == id).CommandsOnFinish.ForEach(CommandManager.Instance.EvalCommand); //obacht
-            _currentElement = QuestElements.Find(e => e.ID == id); //obacht
+            var temp = Array.Find(QuestElements, q => q.ID == id);
 
-            return _currentElement.IsNull();
-        }
+            if (temp.Status == QStatus.Active)
+            {
+                temp.Status = QStatus.Finished;
+                QuestFinished(temp);
 
-        public bool NextQuest(int index)
-        {
-            _currentElement.FollowQuests[index].CommandsOnFinish.ForEach(CommandManager.Instance.EvalCommand); //obacht
-            _currentElement = QuestElements.Find(e => e.ID == _currentElement.FollowQuests[index].LinkedID); //obacht
-
-            return _currentElement.IsNull();
+                CommandManager.Instance.EvalCommands(temp.CommandsAtFinish);
+            }
         }
     }
 }

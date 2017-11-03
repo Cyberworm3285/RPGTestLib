@@ -12,5 +12,7 @@ namespace RPGLib.Quest
         public QStatus Status { get; set; }
 
         public string[] CommandsAtStart { get; set; }
+        public string[] CommandsAtFinish { get; set; }
+
     }
 }

@@ -35,5 +35,13 @@ namespace RPGLib.Commands
 
             currRoot.Method(variables); //obacht
         }
+
+        public void EvalCommands(IEnumerable<string> commands)
+        {
+            foreach (var c in commands)
+            {
+                EvalCommand(c);
+            }
+        }
     }
 }

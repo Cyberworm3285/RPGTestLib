@@ -58,10 +58,11 @@
     <Compile Include="HelperTypes\Collections\Tree\TreeEnumerator.cs" />
     <Compile Include="HelperTypes\Collections\Tree\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quest\FollowQuest.cs" />
     <Compile Include="Quest\QStatus.cs" />
     <Compile Include="Quest\QuestElement.cs" />
     <Compile Include="Quest\QuestManager.cs" />
+    <Compile Include="Skill\SkillManager.cs" />
+    <Compile Include="Skill\Skills.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

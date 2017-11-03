@@ -11,6 +11,8 @@ namespace RPGLib.Dialog
         public string LinkedID { get; set; }
         public string AnswerText { get; set; }
         public string[] CommandsOnExit { get; set; }
+        public string[] RequiredItems { get; set; }
+        public string[] ReqiredSkills { get; set; }
 
         #region Overrides
 
