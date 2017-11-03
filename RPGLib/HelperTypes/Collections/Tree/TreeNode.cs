@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+
+using static RPGLib.Extensions.LINQlike;
 
 namespace RPGLib.HelperTypes.Collections.Tree
 {
@@ -13,6 +14,7 @@ namespace RPGLib.HelperTypes.Collections.Tree
         public TContent Content { get; set; }
         public Dictionary<TId, TreeNode<TContent, TId>> Children { get; set; }
         public List<TId> PendingChildrenIds { get; set; }
+        public int? Index { get; private set; }
 
         #region Constructors
 
@@ -79,9 +81,9 @@ namespace RPGLib.HelperTypes.Collections.Tree
             }
         }
 
-        public void AddChild(TreeNode<TContent, TId> child)
+        public void AddChild(TreeNode<TContent, TId> child, bool removePending = true)
         {
-            if (PendingChildrenIds != null && PendingChildrenIds.Contains(child.ID))
+            if (removePending && PendingChildrenIds != null && PendingChildrenIds.Contains(child.ID))
             {
                 PendingChildrenIds.Remove(child.ID);
             }
@@ -117,15 +119,58 @@ namespace RPGLib.HelperTypes.Collections.Tree
             return output;
         }
 
+        public IEnumerable<TContent> Traverse()
+        {
+            yield return Content;
+            foreach (var child in Children.Values)
+            {
+                foreach(var x in child.Traverse())
+                {
+                    yield return x;
+                }
+            }
+        }
+
+        public void SetIndices(IndexCounter counter)
+        {
+            Index = counter.Next();
+            foreach (var child in Children.Values)
+            {
+                child.SetIndices(counter);
+            }
+        }
+
+        public TContent AtIndex(int index)
+        {
+            var childrenValues = Children.Values.ToArray();
+
+            var temp = Array.FindIndex(childrenValues, c => c.Index == index);
+            if (temp != -1)
+            {
+                return childrenValues[temp].Content;
+            }        
+
+            var i = 0;
+
+            for (; i < childrenValues.Length; i++)
+            {
+                if (childrenValues[i].Index > index)
+                    break;
+            }
+
+            return childrenValues[i - 1].AtIndex(index);
+        }
+
         #endregion
 
         #region Overrides
 
         public override string ToString()
         {
-            return $"[{ID}]";
+            return $"[{ID}::{(Index?.ToString()??"?")}]";
         }
 
         #endregion
+
     }
 }
