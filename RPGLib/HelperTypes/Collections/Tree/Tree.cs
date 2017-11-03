@@ -4,13 +4,17 @@ using System.Text;
 
 namespace RPGLib.HelperTypes.Collections.Tree
 {
-    public class Tree<TContent, TId>
+    public class Tree<TContent, TId> // : ICollection<TContent>
     {
         public TreeNode<TContent, TId> Root { get; set; }
 
-        public Tree() { }
+        public Tree()
+        {
+        }
 
-        public Tree(IEnumerable<TContent> content, Func<TContent, TId> idSelector, Func<TContent, List<TId>> childrenIdSelector, TContent rootContent = default(TContent), TId rootId = default(TId))
+        public Tree(IEnumerable<TContent> content, Func<TContent, TId> idSelector,
+            Func<TContent, List<TId>> childrenIdSelector, TContent rootContent = default(TContent),
+            TId rootId = default(TId))
         {
             List<TreeNode<TContent, TId>> TreeParts = new List<TreeNode<TContent, TId>>();
 
@@ -37,10 +41,11 @@ namespace RPGLib.HelperTypes.Collections.Tree
                     TreeParts.Add(curr); //..oder selbst eingefügt ..
                 }
 
-                foreach (var z in curr.PendingChildrenIds) // ..und alle anderen treeparts die von diesem verlinkt werden ..
+                foreach (var z in curr.PendingChildrenIds
+                ) // ..und alle anderen treeparts die von diesem verlinkt werden ..
                 {
                     var linked = TreeParts.Find(i => i.ID.Equals(z));
-                    if (linked != null)
+                    if (linked != null && !linked.Content.Equals(x))
                     {
                         curr.AddChild(linked); //..werden dem aktuellen unterstellt ..
                         TreeParts.Remove(linked); // ..sowie aus der treepart liste entfernt
@@ -53,6 +58,11 @@ namespace RPGLib.HelperTypes.Collections.Tree
             {
                 Root.AddChild(x);
             }
+        }
+
+        public List<string> GetStringRepresentation()
+        {
+            return Root.GetStringRepresentation("", true);
         }
     }
 }
