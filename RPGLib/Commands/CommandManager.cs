@@ -9,11 +9,14 @@ namespace RPGLib.Commands
         private static CommandManager _instance;
         public static CommandManager Instance => _instance ?? (_instance = new CommandManager());
 
-        public char[] SplitChars { get; set; }
+        public char[] SplitChars { get; set; } = { ' ' };
+        public string ArgSplitChar { get; set; } = "::";
 
         public CommandNode CommandRoot { get; set; }
 
         private CommandManager() { }
+
+        #region Methods
 
         public void EvalCommand(string command)
         {
@@ -43,5 +46,7 @@ namespace RPGLib.Commands
                 EvalCommand(c);
             }
         }
+
+        #endregion
     }
 }

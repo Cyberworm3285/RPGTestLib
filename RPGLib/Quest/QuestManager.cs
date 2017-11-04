@@ -18,6 +18,7 @@ namespace RPGLib.Quest
 
         public event Action<QuestElement> QuestStarted;
         public event Action<QuestElement> QuestFinished;
+        public event Action<QuestElement> QuestIsDead;
 
         private QuestManager() { }
 
@@ -28,22 +29,36 @@ namespace RPGLib.Quest
             if (temp.Status == QStatus.Inactive)
             {
                 temp.Status = QStatus.Active;
-                QuestStarted(temp);
-
                 CommandManager.Instance.EvalCommands(temp.CommandsAtStart);
+
+                QuestStarted(temp);
             }
         }
 
-        public void FinishQuest(string id)
+        public void FinishQuest(string id, bool forceFinish)
         {
             var temp = Array.Find(QuestElements, q => q.ID == id);
 
             if (temp.Status == QStatus.Active)
             {
                 temp.Status = QStatus.Finished;
-                QuestFinished(temp);
-
                 CommandManager.Instance.EvalCommands(temp.CommandsAtFinish);
+
+                QuestFinished(temp);
+            }
+            else if (temp.Status == QStatus.Inactive && forceFinish)
+            {
+                CommandManager.Instance.EvalCommands(temp.CommandsAtStart);
+                QuestStarted(temp);
+
+                temp.Status = QStatus.Finished;
+                CommandManager.Instance.EvalCommands(temp.CommandsAtFinish);
+
+                QuestFinished(temp);
+            }
+            else
+            {
+                QuestIsDead(temp);
             }
         }
     }

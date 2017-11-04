@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandLibrary\CommandMaster.cs" />
+    <Compile Include="Commands\CommandLibrary\DialogCommands.cs" />
+    <Compile Include="Commands\CommandLibrary\ICommandLibrary.cs" />
+    <Compile Include="Commands\CommandLibrary\QuestCommands.cs" />
     <Compile Include="Commands\CommandManager.cs" />
     <Compile Include="Commands\CommandNode.cs" />
     <Compile Include="Dialog\Answer.cs" />
