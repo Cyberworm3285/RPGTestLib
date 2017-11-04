@@ -8,8 +8,8 @@ namespace RPGLib.Quest
 {
     public enum QStatus
     {
-        Active,
         Inactive,
-        Finished
+        Active,
+        Finished,
     }
 }

@@ -11,5 +11,7 @@ namespace RPGLib.Dialog
         public Answer[] Answers { get; set; }
 
         public string[] CommandsAtEnter { get; set; }
+
+        public override string ToString() => $"[{ID}]";
     }
 }

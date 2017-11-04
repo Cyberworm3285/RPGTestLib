@@ -18,9 +18,10 @@ namespace RPGLib.Commands.CommandLibrary
         {
             _node = new CommandNode
             {
-                Children =
+                Children = new Dictionary<string, CommandNode>
                 {
-                    { "Start",  new CommandNode{ Method = StartDialog } }
+                    { "Start",  new CommandNode{ Method = StartDialog } },
+                    { "Next", new CommandNode{ Method = NextDialog } }
                 }
             };
         }
@@ -33,7 +34,14 @@ namespace RPGLib.Commands.CommandLibrary
         {
             var dic = GetDic(input);
 
-            DialogManager.Instance.StartDialog(dic["dialog"]);
+            DialogManager.Instance.StartDialog(dic["id"]);
+        }
+
+        private static void NextDialog(List<string> input)
+        {
+            var dic = GetDic(input);
+
+            DialogManager.Instance.NextDialog(dic["id"]);
         }
 
         #endregion

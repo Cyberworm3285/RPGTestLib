@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
+using RPGLib.Commands.CommandLibrary;
+
+using static RPGLib.Extensions.GenericObjectExtensions;
+
 namespace RPGLib.Commands
 {
     public class CommandManager
@@ -14,7 +18,11 @@ namespace RPGLib.Commands
 
         public CommandNode CommandRoot { get; set; }
 
-        private CommandManager() { }
+        private CommandManager()
+        {
+            CommandRoot = new CommandNode();
+            CommandRoot.Children = CommandMaster.GetAllLibNodes();
+        }
 
         #region Methods
 
@@ -41,6 +49,8 @@ namespace RPGLib.Commands
 
         public void EvalCommands(IEnumerable<string> commands)
         {
+            if (commands.IsNull())
+                return;
             foreach (var c in commands)
             {
                 EvalCommand(c);

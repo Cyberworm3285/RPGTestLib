@@ -14,20 +14,20 @@ namespace RPGLib.Commands.CommandLibrary
 {
     public static class CommandMaster
     {
-        public static (string Key, CommandNode Node)[] GetAllLibNodes(Assembly assembly, string nSpace = null)
+        public static Dictionary<string, CommandNode> GetAllLibNodes(Assembly assembly, string nSpace = null)
         {
             return assembly.GetTypes()
                 .Where(
-                    t => typeof(ICommandLibrary).IsAssignableFrom(t) 
-                        && !t.GetConstructor(new Type[0]).IsNull() 
-                        && (nSpace.IsNull() 
+                    t => typeof(ICommandLibrary).IsAssignableFrom(t)
+                        && !t.GetConstructor(new Type[0]).IsNull()
+                        && (nSpace.IsNull()
                             || t.Namespace == nSpace))
                 .Select(
-                    t => t.GetConstructor(new Type[0]).Invoke(null, null) as ICommandLibrary)
-                .Select(c => (c.RootKey, c.Node))
-                .ToArray();
+                    t => t.GetConstructor(new Type[0]).Invoke(new object[0]) as ICommandLibrary)
+                .ToDictionary(
+                    c => c.RootKey, c => c.Node);
         }
 
-        public static (string Key, CommandNode Node)[] GetAllLibs(string nSpace = null) => GetAllLibNodes(Assembly.GetAssembly(typeof(ICommandLibrary)));
+        public static Dictionary<string, CommandNode> GetAllLibNodes(string nSpace = null) => GetAllLibNodes(Assembly.GetAssembly(typeof(ICommandLibrary)));
     }
 }

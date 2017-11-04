@@ -19,7 +19,7 @@ namespace RPGLib.Commands.CommandLibrary
         {
             _node = new CommandNode
             {
-                Children =
+                Children = new Dictionary<string, CommandNode>
                 {
                     { "Start",new CommandNode { Method = StartQuest } },
                     { "Finish",new CommandNode{ Method = FinishQuest } },
@@ -34,13 +34,21 @@ namespace RPGLib.Commands.CommandLibrary
         private static void StartQuest(List<string> input)
         {
             var dic = GetDic(input);
-            QuestManager.Instance.StartQuest(dic["quest"]);
+            QuestManager.Instance.StartQuest(dic["id"]);
         }
 
         private static void FinishQuest(List<string> input)
         {
             var dic = GetDic(input);
-            QuestManager.Instance.FinishQuest(dic["quest"], bool.Parse(dic["force_finish"]));
+
+            if (dic.Keys.Count == 1)
+            {
+                QuestManager.Instance.FinishQuest(dic["id"]);
+            }
+            else
+            {
+                QuestManager.Instance.FinishQuest(dic["id"], bool.Parse(dic["force_finish"]));
+            }
         }
 
         #endregion

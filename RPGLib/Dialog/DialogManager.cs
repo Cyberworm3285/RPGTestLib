@@ -20,7 +20,10 @@ namespace RPGLib.Dialog
         public Answer[] CurrentAnswers => _currentElement.Answers;
 
         private DialogElement _currentElement { get; set; }
-        
+
+        public event Action<DialogElement> DialogStarted;
+        public event Action<DialogElement> NextDialogStarted;
+        public event Action<DialogElement> DialogFinished;
 
         private DialogManager() { }
 
@@ -28,22 +31,44 @@ namespace RPGLib.Dialog
         {
             _currentElement = DialogElements.Find(e => e.ID == id); //obacht
             _currentElement.CommandsAtEnter.ForEach(CommandManager.Instance.EvalCommand);
+
+            DialogStarted(_currentElement);
         }
 
         public bool NextDialog(string id)
         {
+            var last = _currentElement;
             _currentElement.Answers.Find(array => array.LinkedID == id).CommandsOnExit.ForEach(CommandManager.Instance.EvalCommand); //obacht
             _currentElement = DialogElements.Find(e => e.ID == id); //obacht
 
-            return _currentElement.IsNull();
+            if (_currentElement.IsNull())
+            {
+                DialogFinished(last);
+                return false;
+            }
+            else
+            {
+                NextDialogStarted(_currentElement);
+                return true;
+            }
         }
 
         public bool NextDialog(int index)
         {
-            _currentElement.Answers[index].CommandsOnExit.ForEach(CommandManager.Instance.EvalCommand); //obacht
+            var last = _currentElement;
+            _currentElement.Answers[index]?.CommandsOnExit.ForEach(CommandManager.Instance.EvalCommand); //obacht
             _currentElement = DialogElements.Find(e => e.ID == _currentElement.Answers[index].LinkedID); //obacht
 
-            return _currentElement.IsNull();
+            if (_currentElement.IsNull())
+            {
+                DialogFinished(last);
+                return false;
+            }
+            else
+            {
+                NextDialogStarted(_currentElement);
+                return true;
+            }
         }
     }
 }

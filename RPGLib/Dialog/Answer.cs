@@ -12,13 +12,13 @@ namespace RPGLib.Dialog
         public string AnswerText { get; set; }
         public string[] CommandsOnExit { get; set; }
         public string[] RequiredItems { get; set; }
-        public string[] ReqiredSkills { get; set; }
+        public Dictionary<string, int> ReqiredSkills { get; set; }
 
         #region Overrides
 
         public override string ToString()
         {
-            return $"{LinkedID} :: {AnswerText.NormalizeLength(10)}";
+            return $"{LinkedID} :: {AnswerText.NormalizeLength(20)}";
         }
 
         #endregion

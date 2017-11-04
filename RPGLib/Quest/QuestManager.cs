@@ -3,10 +3,6 @@ using System.Linq;
 
 using RPGLib.Commands;
 
-using static RPGLib.Extensions.LINQlike;
-using static RPGLib.Extensions.GenericObjectExtensions;
-
-
 namespace RPGLib.Quest
 {
     public class QuestManager
@@ -22,6 +18,16 @@ namespace RPGLib.Quest
 
         private QuestManager() { }
 
+        #region Methods
+
+        public void OverrideQuestStates(QuestElement[] overrides)
+        {
+            for (var i = 0; i < QuestElements.Length; i++)
+            {
+                QuestElements[i].Status = overrides[i].Status;
+            }
+        }
+
         public void StartQuest(string id)
         {
             var temp = Array.Find(QuestElements, q => q.ID == id);
@@ -35,7 +41,7 @@ namespace RPGLib.Quest
             }
         }
 
-        public void FinishQuest(string id, bool forceFinish)
+        public void FinishQuest(string id, bool forceFinish = true)
         {
             var temp = Array.Find(QuestElements, q => q.ID == id);
 
@@ -61,5 +67,7 @@ namespace RPGLib.Quest
                 QuestIsDead(temp);
             }
         }
+
+        #endregion
     }
 }

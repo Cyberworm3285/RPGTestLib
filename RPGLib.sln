@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogEditor", "DialogEditor\DialogEditor.csproj", "{FF6418D2-E6D8-4522-AF57-657CB3BB7026}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGLib", "RPGLib\RPGLib.csproj", "{D6F736D7-3FC9-4322-8533-97323414A13D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRange", "TestRange\TestRange.csproj", "{D2E67C2B-286B-4048-BBCC-3302BF14F080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D6F736D7-3FC9-4322-8533-97323414A13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6F736D7-3FC9-4322-8533-97323414A13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6F736D7-3FC9-4322-8533-97323414A13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2E67C2B-286B-4048-BBCC-3302BF14F080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2E67C2B-286B-4048-BBCC-3302BF14F080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2E67C2B-286B-4048-BBCC-3302BF14F080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2E67C2B-286B-4048-BBCC-3302BF14F080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
